@@ -1,0 +1,8 @@
+#this is a comment
+vendor/
+.buildpath
+.settings/
+.project
+composer.lock
+composer.phar
+.idea/

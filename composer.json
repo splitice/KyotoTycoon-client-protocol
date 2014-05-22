@@ -1,0 +1,16 @@
+{
+	"keywords" : [
+		"kyoto", "kyototycoon","tycoon"
+	],
+	"autoload" : {
+		"psr-0" : {
+			"Splitice" : "src"
+		}
+	},
+	"name" : "splitice/kyototycoon",
+	"type" : "library",
+	"description" : "implementation of the Kyoto Tycoon client in PHP",
+	"require" : {
+		"php" : ">=5.3"
+	}
+}
