@@ -257,18 +257,9 @@ final class API
         return $this->rpc( 'cas', compact('DB','key','oval','nval','xt'), null );
     }
 
-    // }}}
-    // {{{ clear
-
-    function __get( $property )
-    {
-        assert('preg_match("/^[\w_]+$/",$property)');
-        switch( $property )
-        {
-            case 'clear':
-                if( $this->base ) $DB = $this->base;
-                return $this->rpc( 'clear', compact('DB'), null );
-        }
+    function clear(){
+        if( $this->base ) $DB = $this->base;
+        return $this->rpc( 'clear', compact('DB'), null );
     }
 
     // }}}

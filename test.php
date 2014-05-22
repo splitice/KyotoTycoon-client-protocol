@@ -19,7 +19,7 @@ qad\test\test(
 	{
 		qad\test\plan(15);
 		$kt = new qad\kyoto\API(server_uri);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		qad\test\except( function()use($kt){$kt->replace('a','academy');}, 'qad\kyoto\InconsistencyException' );
 		qad\test\except( function()use($kt){$kt->get('a');}, 'qad\kyoto\InconsistencyException' );
 		qad\test\except( function()use($kt){$kt->remove('a');}, 'qad\kyoto\InconsistencyException' );
@@ -43,7 +43,7 @@ qad\test\test(
 	{
 		qad\test\plan(8);
 		$kt = new qad\kyoto\API(server_uri);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		qad\test\is( $kt->increment('i'), 1 );
 		qad\test\is( $kt->increment('i',1), 2 );
 		qad\test\is( $kt->increment('i',-1), 1 );
@@ -60,7 +60,7 @@ qad\test\test(
 	{
 		qad\test\plan(11);
 		$kt = new qad\kyoto\API(server_uri);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		qad\test\except( function()use($kt){$kt->cas('b','bottle','battle');}, 'qad\kyoto\InconsistencyException' );
 		qad\test\ok( $kt->set('b','banana') );
 		qad\test\except( function()use($kt){$kt->cas('b','bottle','battle');}, 'qad\kyoto\InconsistencyException' );
@@ -80,7 +80,7 @@ qad\test\test(
 	{
 		qad\test\plan(17);
 		$kt = new qad\kyoto\API(server_uri);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		qad\test\ok( $kt->set('a.b.c','ananas,banana,citrus') );
 		qad\test\ok( $kt->set('a.c.b','ananas,citrus,banana') );
 		qad\test\ok( $kt->set('b.c.a','banana,citrus,ananas') );
@@ -107,7 +107,7 @@ qad\test\test(
 		$kt = new qad\kyoto\API(server_uri);
 
 		qad\test\plan(4);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		qad\test\ok( $kt->set('a','ananas') );
 		qad\test\ok( $kt->set('b','banana') );
 		qad\test\ok( $kt->set('c','citrus') );
@@ -167,7 +167,7 @@ qad\test\test(
 	{
 		qad\test\plan(52);
 		$kt = qad\kyoto\UI(server_uri)->outofbound_return_null;
-		qad\test\isnull( $kt->clear->c );
+		qad\test\isnull( $kt->clear()->c );
 		qad\test\ok( $kt->a('ananas') );
 		qad\test\ok( $kt->bat('battle') );
 		qad\test\ok( $kt->ban('banana') );
@@ -226,7 +226,7 @@ qad\test\test(
 	{
 		qad\test\plan(6);
 		$kt = qad\kyoto\UI(server_uri);
-		qad\test\ok( $kt->clear );
+		qad\test\ok( $kt->clear() );
 		$kt['a'] = 'ananas';
 		$kt['b'] = 'banana';
 		$kt['c'] = 'citrus';

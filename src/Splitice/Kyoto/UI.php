@@ -143,6 +143,11 @@ final class UI implements Iterator, ArrayAccess
         $this->startkey = null;
     }
 
+    function clear(){
+        $this->api->clear();
+        return $this;
+    }
+
     // }}}
     // {{{ __get(), __isset(), __unset(), __call()
 
@@ -153,9 +158,6 @@ final class UI implements Iterator, ArrayAccess
         {
             case 'api':
                 return $this->api;
-            case 'clear':
-                $this->api->clear;
-                return $this;
             case 'outofbound_throw_exception':
                 $this->outofbound = true;
                 return $this;
@@ -405,6 +407,12 @@ final class UI implements Iterator, ArrayAccess
         return $stm;
     }
 
+    /**
+     * @param string $regex
+     * @param int $max
+     * @param null|int $num
+     * @return UI|string[]
+     */
     function search( $regex, $max = 0, &$num = null )
     {
         assert('is_string($regex)');
