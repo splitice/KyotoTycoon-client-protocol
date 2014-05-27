@@ -257,6 +257,7 @@ final class API
         return $this->rpc( 'cas', compact('DB','key','oval','nval','xt'), null );
     }
 
+
     function clear(){
         if( $this->base ) $DB = $this->base;
         return $this->rpc( 'clear', compact('DB'), null );
@@ -264,6 +265,31 @@ final class API
 
     // }}}
     // {{{ get(), getful()
+
+    /**
+     * Retrieve the value of a record.
+     * Params:
+     *	 string $key = The key of the record.
+     *	 (out) integer $xt = The absolute expiration time.
+     *	 (out) null $vsiz = There is no size information.
+     *	 (out) null $xt = There is no expiration time.
+     * Return:
+     *	 bool - the status of the record
+     * Throws:
+     *	 InconsistencyException = If the record do not exists.
+     */
+    function check( $key, &$vsiz = null, &$xt = null )
+    {
+        assert('is_string($key)');
+        if( $this->base ) $DB = $this->base;
+        if( ! $xt ) unset($xt); else $xt = (string)$xt;
+        $result = $this->rpc( 'check', compact('DB','key'), function($result) use(&$xt) {
+            if( isset($result['xt']) ) $xt = $result['xt'];
+            if( isset($result['vsiz']) ) $vsiz = $result['vsiz'];
+            return true;
+        } );
+        return $result?$result:false;
+    }
 
     /**
      * Retrieve the value of a record.
@@ -618,6 +644,19 @@ final class API
         assert('is_string($key)');
         if( $this->base ) $DB = $this->base;
         return $this->rpc( 'remove', compact('DB','key'), null );
+    }
+
+    function remove_bulk( $keys, $atomic = false )
+    {
+        assert('is_array($keys)');
+        if( $this->base ) $DB = $this->base;
+        $inputs = compact('DB','atomic');
+        foreach($keys as $k=>$v){
+            $inputs['_'.$v] = $k;
+        }
+        return $this->rpc( 'remove_bulk', $inputs, function($r){
+            return (int)$r['num'];
+        } );
     }
 
     // }}}

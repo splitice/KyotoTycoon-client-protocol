@@ -68,7 +68,6 @@ use Iterator, ArrayAccess, DomainException, OutOfBoundsException, RuntimeExcepti
 final class UI implements Iterator, ArrayAccess
 {
     // {{{ ---properties
-
     // The API object used to send command.
     private $api = null;
     function api() { return $this->api; }
@@ -221,6 +220,26 @@ final class UI implements Iterator, ArrayAccess
     }
 
     /**
+     * Retrieve the value of a record.
+     * Params:
+     *	 string $key = The key of the record.
+     *	 (out) integer $xt = The absolute expiration time.
+     *	 (out) null $vsiz = There is no size information.
+     *	 (out) null $xt = There is no expiration time.
+     * Return:
+     *	 string = The value of the record.
+     *	 null = If the record do not exists.
+     *	 false = If an error ocurred.
+     */
+    function check( $key, &$vsiz = null, &$xt = null )
+    {
+        assert('is_string($key)');
+        try { return $this->api->check($key,$xt,$vsiz); }
+        catch( OutOfBoundsException $e ) { if( $this->outofbound ) throw $e; else return null; }
+        catch( RuntimeException $e ) { if( $this->runtime ) throw $e; else return false; }
+    }
+
+    /**
      * Retrieve the expiration time of a record.
      * Params:
      *	 string $key = The key of the record.
@@ -350,6 +369,14 @@ final class UI implements Iterator, ArrayAccess
     {
         assert('is_string($key)');
         try { $this->api->remove($key); return true; }
+        catch( OutOfBoundsException $e ) { if( $this->outofbound ) throw $e; else return null; }
+        catch( RuntimeException $e ) { if( $this->runtime ) throw $e; else return false; }
+    }
+
+    function del_bulk( $keys, $atomic = false )
+    {
+        assert('is_array($key)');
+        try { return $this->api->remove_bulk($keys,$atomic); }
         catch( OutOfBoundsException $e ) { if( $this->outofbound ) throw $e; else return null; }
         catch( RuntimeException $e ) { if( $this->runtime ) throw $e; else return false; }
     }
